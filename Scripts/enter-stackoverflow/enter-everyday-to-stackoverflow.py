@@ -62,6 +62,7 @@ def main():
     # enter and log in on stack overflow
     result = login_to_website(driver, cred)
     print(result)
+    driver.quit()
 
 if __name__ == '__main__':
     main()
