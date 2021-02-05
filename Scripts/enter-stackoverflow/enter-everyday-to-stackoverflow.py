@@ -9,8 +9,9 @@ import yaml
 # get config file and return defined configurations
 # WARNING you shouldn't read this from a file or directly
 # from the code, try implementing some kind of vault or key manager
-def get_cred(file_name):
+def get_cred(directory, file_name):
     cred = {}
+    file_name = os.path.join(directory, file_name)
     with open(file_name,'r') as config_file:
         cred = yaml.load(config_file, Loader=yaml.SafeLoader)
     return cred
@@ -41,7 +42,7 @@ def login_to_website(driver,cred):
         actions.move_to_element(login)
         actions.click()
         actions.perform()
-        result = f'Daily visit on the site {site} finished.'
+        result = 'Daily visit on the site finished.'
     except Exception:
         result = 'Error trying to loggin on the website'
     return result
@@ -51,10 +52,11 @@ def main():
     # url where we want to go
     site = 'https://stackoverflow.com/'
     file_name = 'stackoverflow_config.yml'
+    working_directory = os.path.dirname('__file__')
     # setting loging url to the site for quicker access
     site = site + 'users/login'
     # get creds
-    cred = get_cred(file_name)['LOGIN']
+    cred = get_cred(working_directory,file_name)['LOGIN']
     # start browsing
     driver = start_browsing(site)
     # enter and log in on stack overflow
